@@ -1,5 +1,6 @@
 import { getRepos } from "./services/repositories.js";
 import { getUser } from "./services/user.js";
+import { getEvents } from "./services/events.js";
 
 import { user } from './objects/user.js';
 import { screen } from './objects/screen.js';
@@ -28,13 +29,17 @@ function validateEmptyInput(userName) {
 
 async function getUserData(userName) {
     const userResponses = await getUser(userName);
+    console.log(userResponses);
     if(userResponses.message === "Not Found"){
         screen.renderNotFound();
         return;
     }
-
     const repositoriesResponses = await getRepos(userName);
+    const eventsResponses = await getEvents(userName);
     user.setInfo(userResponses);
     user.setRepositories(repositoriesResponses);
+    user.setEvents(eventsResponses);  
     screen.renderUser(user);
+    screen.renderRepositories(user);
+    screen.renderEvenst(user); 
 }
